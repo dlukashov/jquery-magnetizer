@@ -5,7 +5,10 @@
             "fieldLength": 50
         }, options);
 
+        //
         //utility functions
+        //
+
         // determines if mouse is within a bounded region
         function insideObject(X, Y, obj, dist) {
             var xMin = obj.offset().left - dist;
@@ -21,6 +24,7 @@
             }
 
         }
+
         // determines the cartesian distance
         function calcDist(mouseX, objX, mouseY, objY) {
             return Math.sqrt(Math.pow(mouseX - objX, 2) + Math.pow(mouseY - objY, 2));
@@ -36,15 +40,20 @@
                     Y: e.pageY
                 };
 
+                //find midpoint
                 var miX = btnOfst.left + ((.5) * $this.width());
                 var miY = btnOfst.top + ((.5) * $this.height());
 
+
+                //find coordinates of mouse
                 var deltaX = maus.X - miX;
                 var deltaY = miY - maus.Y;
-                var theta = Math.atan2(deltaY, deltaX);
 
+                //calculate the angle and length of the vector  from mouse to midpoint
+                var theta = Math.atan2(deltaY, deltaX);
                 var distance = calcDist(maus.X, miX, maus.Y, miY);
 
+                //calculate the of output vector scaling
                 var transform = ((settings.fieldLength * 1.4) - distance) / (distance + (settings.fieldLength * .2));
 
                 if (insideObject(maus.X, maus.Y, $this, settings.fieldLength)) {
@@ -56,14 +65,14 @@
                     if (btnY <= 0) {
                         var btnY = Math.abs(btnY);
                     }
+                    /* wrapping not tested
                     if (btnX >= $(document).width()) {
                         var btnX = btnX - $(document).width();
                     }
                     if (btnY >= $(document).height()) {
                         var btnX = btnX - $(document).height();
-                    }
+                    }*/
                     $this.css("left", btnX).css("top", btnY);
-                    $("info").html($(document).height());
                 }
             });
         });
